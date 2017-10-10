@@ -1,8 +1,13 @@
 package practice;
 
+import practice.model.*;
+import practice.view.PersonOverviewController;
+
 import java.io.IOException;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -13,6 +18,28 @@ public class MainApp extends Application {
 
 	private Stage primaryStage;
 	private BorderPane rootLayout;
+	
+	/**
+	 * 연락처에 대한 observable 리스트 
+	 */
+	private ObservableList<Person> personData = 
+			FXCollections.observableArrayList();
+	
+	/**
+	 * 생성자
+	 */
+	public MainApp() {
+		// 샘플 데이터 추가
+		personData.add(new Person("Hans", "Zimmer"));
+		personData.add(new Person("CJ", "Lee"));
+	}
+	
+	/**
+	 * 연락처에 대한 observable 리스트를 반환한다.
+	 */
+	public ObservableList<Person> getPersonData() {
+		return personData;
+	}
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -56,6 +83,11 @@ public class MainApp extends Application {
 			
 			// 연락처 요약을 상위 레이아웃 가운데로 설정한다.
 			rootLayout.setCenter(personOverview);
+			
+			// 메인 애플리케이션이 컨트롤러를 이용할 수 있게 한다.
+			PersonOverviewController controller = loader.getController();
+			controller.setMainApp(this);
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
