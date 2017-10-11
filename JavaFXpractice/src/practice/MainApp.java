@@ -11,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
@@ -47,6 +48,9 @@ public class MainApp extends Application {
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("AddressApp");
+		
+		// 애플리케이션 아이콘을 설정한다.
+		this.primaryStage.getIcons().add(new Image("file:resources/images/address_book_icon.png"));
 		
 		initRootLayout();
 		
@@ -116,6 +120,7 @@ public class MainApp extends Application {
 			dialogStage.initOwner(primaryStage);
 			Scene scene = new Scene(page);
 			dialogStage.setScene(scene);
+			dialogStage.getIcons().add(new Image("file:resources/images/address_book_edit_icon.png"));
 			
 			// person을 컨트롤러에 설정한다.
 			PersonEditDialogController controller = loader.getController();
