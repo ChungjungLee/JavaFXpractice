@@ -2,6 +2,7 @@ package practice;
 
 import practice.model.*;
 import practice.view.PersonOverviewController;
+import practice.view.PersonEditDialogController;
 
 import java.io.IOException;
 
@@ -12,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class MainApp extends Application {
@@ -90,6 +92,43 @@ public class MainApp extends Application {
 			
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * person의 자세한 정보를 변경하기 위해 다이얼로그를 연다.
+	 * 만일 사용자가 OK를 클릭하면 주어진 person에 내용 저장 후 true를 반환한다.
+	 * 
+	 * @param person the person object to be edited
+	 * @return true if the user clicked OK, false otherwise.
+	 */
+	public boolean showPersonEditDialog(Person person) {
+		try {
+			// fxml 파일을 로드하고 나서 새로운 스테이지를 만든다.
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/PersonEditDialog.fxml"));
+			AnchorPane page = (AnchorPane) loader.load();
+			
+			// 다이얼로그 스테이지를 만든다.
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Edit Person");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(primaryStage);
+			Scene scene = new Scene(page);
+			dialogStage.setScene(scene);
+			
+			// person을 컨트롤러에 설정한다.
+			PersonEditDialogController controller = loader.getController();
+			controller.setDialogStage(dialogStage);
+			controller.setPerson(person);
+			
+			// 다이얼로그를 보여주고 사용자가 닫을 때까지 기다린다.
+			dialogStage.showAndWait();
+			
+			return controller.isOkClicked();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 	

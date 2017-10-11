@@ -4,6 +4,8 @@ import practice.MainApp;
 import practice.model.Person;
 import practice.util.DateUtil;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -98,5 +100,64 @@ public class PersonOverviewController {
 		}
 	}
 	
+	/**
+	 * 사용자가 new 버튼을 클릭할 때 호출된다.
+	 * 새로운 연락처 정보를 넣기 위해 다이얼로그를 연다.
+	 */
+	@FXML
+	private void handleNewPerson() {
+		Person tempPerson = new Person();
+		boolean okClicked = mainApp.showPersonEditDialog(tempPerson);
+		
+		if (okClicked) {
+			mainApp.getPersonData().add(tempPerson);
+		}
+	}
 	
+	/**
+	 * 사용자가 edit 버튼을 클릭할 때 호출된다.
+	 * 선택한 연락처 정보를 변경하기 위해 다이얼로그를 연다.
+	 */
+	@FXML
+	private void handleEditPerson() {
+		Person selectedPerson = personTable.getSelectionModel().getSelectedItem();
+		
+		if (selectedPerson != null) {
+			boolean okClicked = mainApp.showPersonEditDialog(selectedPerson);
+			if (okClicked) {
+				showPersonDetails(selectedPerson);
+			}
+		} else {
+			// 아무 cell도 선택하지 않았다.
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.initOwner(mainApp.getPrimaryStage());
+			alert.setTitle("No Selection");
+			alert.setHeaderText("No Person Selected");
+			alert.setContentText("Please select a person in the table.");
+			
+			alert.showAndWait();
+		}
+	}
+	
+	/**
+	 * 사용자가 삭제 버튼을 클릭하면 호출된다.
+	 */
+	@FXML
+	private void handleDeletePerson() {
+		int selectedIndex = personTable.getSelectionModel().getSelectedIndex();
+		
+		if (selectedIndex >= 0) {
+			personTable.getItems().remove(selectedIndex);
+		} else {
+			// table내 어떠한 셀도 선택하지 않았을 때
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.initOwner(mainApp.getPrimaryStage());
+			alert.setTitle("No Selection");
+			alert.setHeaderText("No Person Selected");
+			alert.setContentText("Please select a person in the table.");
+			
+			alert.showAndWait();
+		}
+		
+	}
 }
