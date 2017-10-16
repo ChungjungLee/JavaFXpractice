@@ -1,118 +1,119 @@
 package practice.view;
 
-import practice.MainApp;
-
 import java.io.File;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
+import practice.MainApp;
 
 /**
- * 상위 레이아웃에 대한 컨트롤러이다. 
- * 상위 레이아웃은 메뉴바와 JavaFX 엘리먼트가 들어갈 공간을
- * 포함한 기본적인 레이아웃을 제공한다.
- * @author user
- *
+ * The controller for the root layout. The root layout provides the basic
+ * application layout containing a menu bar and space where other JavaFX
+ * elements can be placed.
+ * 
+ * @author Marco Jakob
  */
 public class RootLayoutController {
-	
-	// 메인 애플리케이션 참조
-	private MainApp mainApp;
-	
-	/**
-	 * 참조를 다시 유지하기 위해 메인 애플리케이션이 호출한다.
-	 */
-	public void setMainApp(MainApp mainApp) {
-		this.mainApp = mainApp;
-	}
-	
-	/**
-	 * 비어 있는 주소록을 만든다.
-	 */
-	@FXML
-	private void handleNew() {
-		mainApp.getPersonData().clear();
-		mainApp.setPersonFilePath(null);
-	}
-	
-	/**
-	 * FileChooser를 열어서 사용자가 가져올 주소록을 선택하게 한다.
-	 */
-	@FXML
-	private void handleOpen() {
-		FileChooser fileChooser = new FileChooser();
-		
-		// 확장자 필터를 설정한다.
-		FileChooser.ExtensionFilter extFilter =
-				new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
-		fileChooser.getExtensionFilters().add(extFilter);
-		
-		// Save File Dialog를 보여준다.
-		File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
-		
-		if (file != null) {
-			mainApp.loadPersonDataFromFile(file);
-		}
-	}
-	
-	/**
-	 * 현재 열려 있는 파일에 저장한다.
-	 * 만일 열려 있는 파일이 없으면 "save as" 다이얼로그를 보여준다.
-	 */
-	@FXML
-	private void handleSave() {
-		File personFile = mainApp.getPersonFilePath();
-		if (personFile != null) {
-			mainApp.savePersonDataToFile(personFile);
-		} else {
-			handleSaveAs();
-		}
-	}
-	
-	/**
-	 * FileChooser를 열어서 사용자가 저장할 파일을 선택하게 한다.
-	 */
-	@FXML
-	private void handleSaveAs() {
-		FileChooser fileChooser = new FileChooser();
-		
-		// 확장자 필터를 설정한다.
-		FileChooser.ExtensionFilter extFilter = 
-				new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
-		fileChooser.getExtensionFilters().add(extFilter);
-		
-		// Save File Dialog를 보여준다.
-		File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
-		
-		if (file != null) {
-			// 정확한 확장자를 가져야 한다.
-			if (!file.getPath().endsWith(".xml")) {
-				file = new File(file.getPath() + ".xml");
-			}
-			mainApp.savePersonDataToFile(file);
-		}
-	}
-	
-	/**
-	 * About 다이얼로그를 보여준다.
-	 */
-	@FXML
-	private void handleAbout() {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("AddressApp");
-		alert.setHeaderText("About");
-		alert.setContentText("Author: CJ Lee");
-		
-		alert.showAndWait();
-	}
-	
-	/**
-	 * 애플리케이션을 닫는다.
-	 */
-	@FXML
-	private void handleExit() {
-		System.exit(0);
-	}
+
+    // Reference to the main application
+    private MainApp mainApp;
+
+    /**
+     * Is called by the main application to give a reference back to itself.
+     * 
+     * @param mainApp
+     */
+    public void setMainApp(MainApp mainApp) {
+        this.mainApp = mainApp;
+    }
+
+    /**
+     * Creates an empty address book.
+     */
+    @FXML
+    private void handleNew() {
+        mainApp.getPersonData().clear();
+        mainApp.setPersonFilePath(null);
+    }
+
+    /**
+     * Opens a FileChooser to let the user select an address book to load.
+     */
+    @FXML
+    private void handleOpen() {
+        FileChooser fileChooser = new FileChooser();
+
+        // Set extension filter
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+                "XML files (*.xml)", "*.xml");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        // Show save file dialog
+        File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
+
+        if (file != null) {
+            mainApp.loadPersonDataFromFile(file);
+        }
+    }
+
+    /**
+     * Saves the file to the person file that is currently open. If there is no
+     * open file, the "save as" dialog is shown.
+     */
+    @FXML
+    private void handleSave() {
+        File personFile = mainApp.getPersonFilePath();
+        if (personFile != null) {
+            mainApp.savePersonDataToFile(personFile);
+        } else {
+            handleSaveAs();
+        }
+    }
+
+    /**
+     * Opens a FileChooser to let the user select a file to save to.
+     */
+    @FXML
+    private void handleSaveAs() {
+        FileChooser fileChooser = new FileChooser();
+
+        // Set extension filter
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+                "XML files (*.xml)", "*.xml");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        // Show save file dialog
+        File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
+
+        if (file != null) {
+            // Make sure it has the correct extension
+            if (!file.getPath().endsWith(".xml")) {
+                file = new File(file.getPath() + ".xml");
+            }
+            mainApp.savePersonDataToFile(file);
+        }
+    }
+
+    /**
+     * Opens an about dialog.
+     */
+    @FXML
+    private void handleAbout() {
+    	Alert alert = new Alert(AlertType.INFORMATION);
+    	alert.setTitle("AddressApp");
+    	alert.setHeaderText("About");
+    	alert.setContentText("Author: Marco Jakob\nWebsite: http://code.makery.ch");
+
+    	alert.showAndWait();
+    }
+
+    /**
+     * Closes the application.
+     */
+    @FXML
+    private void handleExit() {
+        System.exit(0);
+    }
 }
