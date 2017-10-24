@@ -16,6 +16,10 @@ import practice.util.DateUtil;
  */
 public class PersonEditDialogController {
 
+	/*
+	 * In FXML file, there should be a textfield element 
+	 * which name is same with the variable name.
+	 */
     @FXML
     private TextField firstNameField;
     @FXML
@@ -28,6 +32,8 @@ public class PersonEditDialogController {
     private TextField cityField;
     @FXML
     private TextField birthdayField;
+    @FXML
+    private TextField emailField;
 
 
     private Stage dialogStage;
@@ -66,6 +72,7 @@ public class PersonEditDialogController {
         cityField.setText(person.getCity());
         birthdayField.setText(DateUtil.format(person.getBirthday()));
         birthdayField.setPromptText("dd.mm.yyyy");
+        emailField.setText(person.getEmail());
     }
 
     /**
@@ -89,7 +96,8 @@ public class PersonEditDialogController {
             person.setPostalCode(Integer.parseInt(postalCodeField.getText()));
             person.setCity(cityField.getText());
             person.setBirthday(DateUtil.parse(birthdayField.getText()));
-
+            person.setEmail(emailField.getText());
+            
             okClicked = true;
             dialogStage.close();
         }
@@ -142,6 +150,18 @@ public class PersonEditDialogController {
             if (!DateUtil.validDate(birthdayField.getText())) {
                 errorMessage += "No valid birthday. Use the format dd.mm.yyyy!\n";
             }
+        }
+        
+        if (emailField.getText() == null || emailField.getText().length() == 0) {
+        	errorMessage += "No valid email address!\n";
+        } else {
+        	if (!emailField.getText().contains("@")
+        		|| !emailField.getText().endsWith(".com") 
+        		|| !emailField.getText().endsWith(".net")
+        		|| !emailField.getText().endsWith("ac.kr")
+        		|| !emailField.getText().endsWith(".edu")) {
+        		errorMessage += "No valid email address. .com/.net\n";
+        	}
         }
 
         if (errorMessage.length() == 0) {

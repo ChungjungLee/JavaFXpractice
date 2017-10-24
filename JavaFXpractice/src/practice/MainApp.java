@@ -67,7 +67,7 @@ public class MainApp extends Application {
         this.primaryStage.setTitle("AddressApp");
         
         // Set the application icon.
-        this.primaryStage.getIcons().add(new Image("file:resources/images/address_book_32.png"));
+        this.primaryStage.getIcons().add(new Image("file:resources/images/address_book_icon.png"));
 
         initRootLayout();
 
@@ -102,6 +102,7 @@ public class MainApp extends Application {
         // Try to load last opened person file.
         File file = getPersonFilePath();
         if (file != null) {
+        	System.out.println(file.getPath());
             loadPersonDataFromFile(file);
         }
     }
@@ -157,7 +158,7 @@ public class MainApp extends Application {
             controller.setPerson(person);
 
             // Set the dialog icon.
-            dialogStage.getIcons().add(new Image("file:resources/images/edit.png"));
+            dialogStage.getIcons().add(new Image("file:resources/images/address_book_edit_icon.png"));
             
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();

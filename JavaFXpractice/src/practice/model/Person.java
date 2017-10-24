@@ -26,7 +26,8 @@ public class Person {
     private final IntegerProperty postalCode;
     private final StringProperty city;
     private final ObjectProperty<LocalDate> birthday;
-
+    private final StringProperty email;
+    
     /**
      * Default constructor.
      */
@@ -49,6 +50,7 @@ public class Person {
         this.postalCode = new SimpleIntegerProperty(1234);
         this.city = new SimpleStringProperty("some city");
         this.birthday = new SimpleObjectProperty<LocalDate>(LocalDate.of(1999, 2, 21));
+        this.email = new SimpleStringProperty("example@gmail.com");
     }
 
     public String getFirstName() {
@@ -122,5 +124,17 @@ public class Person {
 
     public ObjectProperty<LocalDate> birthdayProperty() {
         return birthday;
+    }
+    
+    public String getEmail() {
+    	return email.get();
+    }
+    
+    public void setEmail(String email) {
+    	this.email.set(email);
+    }
+    
+    public StringProperty emailProperty() {
+    	return email;
     }
 }
